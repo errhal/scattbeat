@@ -5,7 +5,7 @@ import (
 
 	"github.com/errhal/scattbeat/cmd"
 
-	#_ "github.com/errhal/scattbeat/include"
+	_ "github.com/errhal/scattbeat/include"
 )
 
 func main() {
