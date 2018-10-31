@@ -1,0 +1,5 @@
+= Scattbeat Docs
+
+Welcome to the Scattbeat documentation.
+
+
