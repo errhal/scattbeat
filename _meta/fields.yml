@@ -7,3 +7,11 @@
       required: true
       description: >
         PLEASE UPDATE DOCUMENTATION
+
+    - name: total_connections_number
+          type: long
+          required: true
+
+    - name: current_connections_number
+          type: long
+          required: true
