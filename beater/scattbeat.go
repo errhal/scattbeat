@@ -18,8 +18,8 @@ type Message struct {
 }
 
 type Status struct {
-	TotalConnectionsNumber   string
-	CurrentConnectionsNumber string
+	TotalConnectionsNumber   int64
+	CurrentConnectionsNumber int64
 }
 
 // Scattbeat configuration.
@@ -56,7 +56,12 @@ func (bt *Scattbeat) Run(b *beat.Beat) error {
 	ticker := time.NewTicker(bt.config.Period)
 	counter := 1
 	for {
-		conn, _ := net.Dial("tcp", "127.0.0.1:7000")
+		conn, err := net.Dial("tcp", "127.0.0.1:7000")
+		if (err != nil) {
+			println("Error during database connection")
+			time.Sleep(1000)
+			break
+		}
 
 		messageObject := Message{"query", "show status"}
 		serializedMessage, _ := json.Marshal(messageObject)
@@ -78,6 +83,8 @@ func (bt *Scattbeat) Run(b *beat.Beat) error {
 		case <-ticker.C:
 		}
 
+		println("BEFORE SENT", status.TotalConnectionsNumber)
+
 		event := beat.Event{
 			Timestamp: time.Now(),
 			Fields: common.MapStr{
@@ -91,6 +98,7 @@ func (bt *Scattbeat) Run(b *beat.Beat) error {
 		logp.Info("Event sent")
 		counter++
 	}
+	return err
 }
 
 // Stop stops scattbeat.
